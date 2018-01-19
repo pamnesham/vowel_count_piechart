@@ -10,6 +10,7 @@ def vowelCount(astring):
     u = 0
     freqList = []
     r = 150
+    #look at each character and count the vowels
     for x in astring:
         if x == 'A' or x == 'a':
             a += 1
@@ -22,7 +23,8 @@ def vowelCount(astring):
         elif x == 'U' or x == 'u':
             u += 1
         freqList = [a, e, i, o, u]
-        total = sum(freqList)
+
+    #if the string has no vowels:
     if a ==0 and e == 0 and i == 0 and o == 0 and u == 0:
         deg = 0
         turtle.pu()
@@ -39,14 +41,24 @@ def vowelCount(astring):
         turtle.goto(-100,175)
         turtle.write("There are no vowels.", font = ("Papyrus", 15, "bold"))
         turtle.exitonclick()
-    else:
-        for each in range(len(freqList)):
-            freqList[each] = freqList[each]/total*360
     return freqList
 
 #This function creates a piechart based on vowel frequencies
 def pieChart(flist):
-    turtle.pensize(width = 2.4)
+
+    total = sum(flist)
+    t = turtle.Turtle()
+    t.hideturtle()
+    t.pu()
+    t.goto(200, 50)
+    #write the amount of each vowel on the side
+    t.write("A : " + str(round((flist[0]/total)*100,2)) +"%\nE : "+ str(round((flist[1]/total)*100,2))\
+     +"%\n I  : "+ str(round((flist[2]/total)*100,2)) +"%\nO : "+ str(round((flist[3]/total)*100,2)) +\
+     "%\nU : " + str(round((flist[4]/total)*100,2)) + "%", font = ("Arial", 12, "normal"))
+
+    for each in range(len(flist)):
+        flist[each] = flist[each]/total*360
+    turtle.pensize(width = 2.8)
     r = 150
     colors = ['#48C48E', '#E0EF69', '#F6943D', '#13799F', '#C95264']
     colorIndex = 0
@@ -89,13 +101,30 @@ def pieChart(flist):
             turtle.write(labels[index], font = ("Arial", 9, "normal"))
             turtle.goto(0,0)
 
+#Reads a csv file and returns it as a string
+def readFile(afile):
+    lineList = ""
+    fileobj = open(afile, "r")
+    line = fileobj.readline()
+    for line in fileobj:
+        lineList += line
+    fileobj.close()
+    return lineList
+
 #Function that calls pieChart function on vowelCount function
 def main():
     turtle.delay(0)
     turtle.hideturtle()
+
+    #to import csv files:
+    #stringInput = readFile("usaSurnames.csv")
+    #stringInput = readFile("ngaSurnames.csv")
+
+    #to solicit user imput:
     stringInput = turtle.textinput("Vowel Frequency","Enter a string.")
+
     pieChart(vowelCount(stringInput))
-    turtle.hideturtle()
+    turtle.exitonclick()
 
 
 if __name__ == '__main__':
